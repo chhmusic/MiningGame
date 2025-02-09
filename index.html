@@ -10,29 +10,63 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
+            background-color: #f4f4f4;
         }
-        button {
-            padding: 10px 20px;
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: auto;
+        }
+        .mining-icon {
+            width: 100px;
+        }
+        .stats {
             font-size: 18px;
+            margin: 10px 0;
+        }
+        .button {
+            padding: 15px;
+            font-size: 18px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            width: 100%;
+        }
+        .button.booster {
+            background-color: #007bff;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Willkommen im TON Mining Game!</h1>
-    <p>Klicke auf den Button, um das Mining zu starten.</p>
-    <button id="startMining">Start Mining</button>
-    <p id="status"></p>
+    <div class="container">
+        <h1>TON Mining Game</h1>
+        <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" class="mining-icon" alt="Mining">
+        <p class="stats">Hashrate: <span id="hashrate">100 GH/s</span> ⚡</p>
+        <p class="stats">Mined: <span id="mined">0.000 DOGE</span></p>
+        <button class="button" id="startMining">Start Mining</button>
+        <button class="button booster" id="buyBooster">Buy Booster</button>
+    </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand(); // Maximiert die Mini-App
-
+        let hashrate = 100; // Start-Hashrate
+        let mined = 0;
+        
         document.getElementById("startMining").addEventListener("click", function() {
-            document.getElementById("status").innerText = "Mining gestartet...";
-            setTimeout(() => {
-                document.getElementById("status").innerText = "Mining abgeschlossen! +10 TON";
-            }, 2000);
+            mined += hashrate * 0.00001;
+            document.getElementById("mined").innerText = mined.toFixed(6) + " DOGE";
+        });
+        
+        document.getElementById("buyBooster").addEventListener("click", function() {
+            hashrate += 50;
+            document.getElementById("hashrate").innerText = hashrate + " GH/s";
         });
     </script>
 </body>
