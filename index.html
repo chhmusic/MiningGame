@@ -47,27 +47,49 @@
     <div class="container">
         <h1>TON Mining Game</h1>
         <img src="https://cryptologos.cc/logos/dogecoin-doge-logo.png" class="mining-icon" alt="Mining">
-        <p class="stats">Hashrate: <span id="hashrate">100 GH/s</span> ⚡</p>
-        <p class="stats">Mined: <span id="mined">0.000 DOGE</span></p>
+        <p class="stats">Level: <span id="level">1</span></p>
+        <p class="stats">Hashrate: <span id="hashrate">100 MH/s</span> ⚡</p>
+        <p class="stats">Mined: <span id="mined">0.000 TON</span></p>
         <button class="button" id="startMining">Start Mining</button>
         <button class="button booster" id="buyBooster">Buy Booster</button>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
-        tg.expand(); // Maximiert die Mini-App
-        let hashrate = 100; // Start-Hashrate
+        tg.expand();
+        let hashrate = 100;
         let mined = 0;
-        
-        document.getElementById("startMining").addEventListener("click", function() {
-            mined += hashrate * 0.00001;
-            document.getElementById("mined").innerText = mined.toFixed(6) + " DOGE";
-        });
-        
+        let miningActive = false;
+        let level = 1;
+
+        function startMining() {
+            if (!miningActive) {
+                miningActive = true;
+                document.getElementById("startMining").disabled = true;
+                setInterval(() => {
+                    mined += hashrate * 0.00001;
+                    document.getElementById("mined").innerText = mined.toFixed(6) + " TON";
+                }, 1000);
+            }
+        }
+
+        document.getElementById("startMining").addEventListener("click", startMining);
+
         document.getElementById("buyBooster").addEventListener("click", function() {
-            hashrate += 50;
-            document.getElementById("hashrate").innerText = hashrate + " GH/s";
+            let boosterWindow = window.open("", "_blank", "width=400,height=300");
+            boosterWindow.document.write(`
+                <h2>Upgrade Store</h2>
+                <button onclick="window.opener.upgradeBooster(50, 2); window.close();">+50 MH/s (2x EXP)</button>
+                <button onclick="window.opener.upgradeBooster(100, 5); window.close();">+100 MH/s (5x EXP)</button>
+            `);
         });
+
+        function upgradeBooster(extraHash, expBoost) {
+            hashrate += extraHash;
+            level += expBoost;
+            document.getElementById("hashrate").innerText = hashrate + " MH/s";
+            document.getElementById("level").innerText = level;
+        }
     </script>
 </body>
 </html>
