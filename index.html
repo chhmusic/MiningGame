@@ -62,12 +62,13 @@
         let miningActive = false;
         let level = 1;
         let boosterPurchased = false;
+        let miningInterval;
 
         function startMining() {
             if (!miningActive) {
                 miningActive = true;
                 document.getElementById("startMining").disabled = true;
-                setInterval(() => {
+                miningInterval = setInterval(() => {
                     mined += hashrate * 0.00001;
                     document.getElementById("mined").innerText = mined.toFixed(6) + " TON";
                 }, 1000);
