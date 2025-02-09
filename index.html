@@ -61,6 +61,7 @@
         let mined = 0;
         let miningActive = false;
         let level = 1;
+        let boosterPurchased = false;
 
         function startMining() {
             if (!miningActive) {
@@ -76,12 +77,16 @@
         document.getElementById("startMining").addEventListener("click", startMining);
 
         document.getElementById("buyBooster").addEventListener("click", function() {
-            let boosterWindow = window.open("", "_blank", "width=400,height=300");
-            boosterWindow.document.write(`
-                <h2>Upgrade Store</h2>
-                <button onclick="window.opener.upgradeBooster(50, 2); window.close();">+50 MH/s (2x EXP)</button>
-                <button onclick="window.opener.upgradeBooster(100, 5); window.close();">+100 MH/s (5x EXP)</button>
-            `);
+            if (!boosterPurchased) {
+                boosterPurchased = true;
+                let boosterWindow = window.open("", "_blank", "width=400,height=300");
+                boosterWindow.document.write(`
+                    <h2>Upgrade Store</h2>
+                    <button onclick="window.opener.upgradeBooster(50, 2); window.close();">+50 MH/s (2x EXP)</button>
+                    <button onclick="window.opener.upgradeBooster(100, 5); window.close();">+100 MH/s (5x EXP)</button>
+                `);
+                document.getElementById("buyBooster").disabled = true;
+            }
         });
 
         function upgradeBooster(extraHash, expBoost) {
